@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from .models import Post, Categories
 from django.db.models import Q
+from django.core.paginator import Paginator
+
 # Create your views here.
 
 def detail_post(request, slug):
@@ -16,6 +18,10 @@ def home(request):
             Q(title__icontains = queryset) |
             Q(description__icontains = queryset)
         ).distinct()
+
+    paginator = Paginator(post, 2)
+    page = request.GET.get('page')
+    post = paginator.get_page(page)
 
     return render(request, 'index.html', {'posts': post })
 
@@ -33,6 +39,9 @@ def generals(request):
             category=Categories.objects.get(name__iexact='General')
         )
 
+    paginator = Paginator(posts, 2)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
     return render(request, 'generals.html', {'posts': posts})
 
 def games(request):
@@ -48,6 +57,9 @@ def games(request):
             state=True,
             category=Categories.objects.get(name__iexact='Videojuegos')
         )
+    paginator = Paginator(posts, 2)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
     return render(request, 'games.html', {'posts': posts})
 
 def programming(request):
@@ -63,6 +75,9 @@ def programming(request):
             state=True,
             category=Categories.objects.get(name__iexact='Programación')
         )
+    paginator = Paginator(posts, 2)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
     return render(request, 'programming.html',{'posts': posts})
 
 def technology(request):
@@ -78,6 +93,9 @@ def technology(request):
             state=True,
             category=Categories.objects.get(name__iexact='Tecnología')
         )
+    paginator = Paginator(posts, 2)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
     return render(request, 'technology.html', {'posts': posts})
 
 def tutorials(request):
@@ -93,4 +111,7 @@ def tutorials(request):
             state=True,
             category=Categories.objects.get(name__iexact='Tutoriales')
         )
+    paginator = Paginator(posts, 2)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
     return render(request, 'tutorials.html', {'posts': posts})
